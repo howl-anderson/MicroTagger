@@ -3,9 +3,10 @@ import functools
 
 
 class Viterbi(object):
-    def __init__(self, A, B, start_state='<start>', end_state='<end>'):
+    def __init__(self, A, B, vocabulary, start_state='<start>', end_state='<end>'):
         self.A = A
         self.B = B
+        self.vocabulary = vocabulary
 
         self.start_state= start_state
         self.end_state = end_state
@@ -16,13 +17,17 @@ class Viterbi(object):
         N = len(word_list)
         T = N - 1
         trackback = {}
+        average_emission_probability = 1 / len(self.vocabulary)
 
         all_states = self.A.keys() - {self.start_state}  # remove start_state
 
         # initialization step
+        first_word = word_list[0]
         for state in all_states:
+            default_word_emission = 0 if first_word in self.vocabulary else average_emission_probability
+
             self.trellis[state] = {}
-            self.trellis[state][0] = self.A[self.start_state].get(state, 0) * self.B[state].get(word_list[0], 0)
+            self.trellis[state][0] = self.A[self.start_state].get(state, 0) * self.B[state].get(first_word, default_word_emission)
             trackback[state] = {}
             trackback[state][0] = self.start_state
 
@@ -36,7 +41,9 @@ class Viterbi(object):
                 for i in all_states:
                     previous_path_probability = self.trellis[i][step - 1]
                     transition_probability = self.A[i].get(state, 0)
-                    state_observation_likelihood = self.B[state].get(word, 0)
+
+                    default_word_emission = 0 if word in self.vocabulary else average_emission_probability
+                    state_observation_likelihood = self.B[state].get(word, default_word_emission)
 
                     candidate = previous_path_probability * transition_probability * state_observation_likelihood
                     candidate_list.append([i, candidate])
@@ -93,7 +100,7 @@ if __name__ == "__main__":
     A = {'<start>': {'A': 1.0}, 'C': {'<end>': 1.0}, 'A': {'B': 1.0}, 'B': {'C': 1.0}}
     B = {'C': {'人': 0.5, '中国人': 0.5}, 'A': {'你': 0.5, '我': 0.5}, 'B': {'是': 0.5, '打': 0.5}}
     viterbi = Viterbi(A, B)
-    viterbi._do_predict(["我", "是", "中国人"])
+    viterbi._do_predict(["我", "打", "中国人"])
 
     state_sequence = viterbi.predict_state(["我", "是", "中国人"])
     print(state_sequence)

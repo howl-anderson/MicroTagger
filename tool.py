@@ -9,6 +9,8 @@
     Zhang Zhiyuan ,EECS Peking Univ. 2017/02/23
 '''
 
+from tqdm import tqdm
+
 
 class dataType:
     def __init__(self):
@@ -50,9 +52,15 @@ def driver(trainLines, testLines, trainFunction, posTagFunction):
         print('Too many lines!')
         return
     data = dataType()
-    for i in range(trainLines):
+
+    tqdm.write("Training start!")
+    for i in tqdm(range(trainLines)):
         line = data.getTrainLine()
         trainFunction(line)
-    for i in range(testLines):
+
+    tqdm.write("Evaluate start!")
+    for i in tqdm(range(testLines)):
         data.testLine(posTagFunction(data.getTestLine()))
+
+    tqdm.write("Report start!")
     data.report()

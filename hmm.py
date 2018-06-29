@@ -12,6 +12,7 @@ class HMMTagger(object):
         # only things that Viterbi will used
         self.A = {}
         self.B = {}
+        self.vocabulary = set()
 
         self.state_count = {}  # count of each state
         self.state_bigram = {}  # count of (State_{t} | State_{t-1})
@@ -22,14 +23,7 @@ class HMMTagger(object):
         previous_tag = self.START_STATE
         for word_pinyin_tag in line.split():
             # extract
-            word_pinyin, tag = word_pinyin_tag.split('/')
-
-            # if word_pinyin contains pinyin
-            if '{' in word_pinyin:
-                word, pinyin_with_tail = word_pinyin.split('{')
-                pinyin = pinyin_with_tail[:-1]
-            else:
-                word = word_pinyin
+            word, tag = word_pinyin_tag.split('/')
 
             # compute
             # compute transition count
@@ -44,6 +38,8 @@ class HMMTagger(object):
 
             # compute emission count
             self._state_observation_pair_increase_one(tag, word)
+
+            self.vocabulary.add(word)
 
         # process last tag
         # NOTE:
@@ -105,7 +101,7 @@ class HMMTagger(object):
         word_list = [i.strip() for i in line.split()]
 
         # TODO: apply Viterbi algorithms to here
-        viterbi = Viterbi(self.A, self.B)
+        viterbi = Viterbi(self.A, self.B, self.vocabulary)
         state_list = viterbi.predict_state(word_list)
         tag_list = state_list[1:-1]
 
