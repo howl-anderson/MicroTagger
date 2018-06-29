@@ -8,7 +8,7 @@ class Viterbi(object):
 
         self.trellis = {}
 
-    def predict(self, word_list):
+    def _do_predict(self, word_list):
         N = len(word_list)
         trackback = {}
 
@@ -28,7 +28,7 @@ class Viterbi(object):
             for state in all_states:
                 # compute all previous path
                 candidate_list = []
-                for i in self.A.keys() - {self.start_state}:
+                for i in all_states:
                     candidate = self.trellis[i][step - 1] * self.A[i].get(state, 0) * self.B[state].get(word, 0)
                     candidate_list.append([i, candidate])
 
@@ -58,4 +58,4 @@ if __name__ == "__main__":
     A = {'<start>': {'A': 1.0}, 'C': {'<end>': 1.0}, 'A': {'B': 1.0}, 'B': {'C': 1.0}}
     B = {'C': {'人': 0.5, '中国人': 0.5}, 'A': {'你': 0.5, '我': 0.5}, 'B': {'是': 0.5, '打': 0.5}}
     viterbi = Viterbi(A, B)
-    viterbi.predict("我 是 中国人")
+    viterbi._do_predict(["我", "是", "中国人"])
