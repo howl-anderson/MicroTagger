@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from viterbi import Viterbi
+
 
 class HMMTagger(object):
     START_STATE = '<start>'
@@ -100,10 +102,17 @@ class HMMTagger(object):
         if not self.A:  # using self.A as an training-flag indicate if already trained.
             self._do_train()
 
-        word = [i.strip() for i in line.split()]
+        word_list = [i.strip() for i in line.split()]
 
         # TODO: apply Viterbi algorithms to here
-        pass
+        viterbi = Viterbi(self.A, self.B)
+        state_list = viterbi.predict_state(word_list)
+        tag_list = state_list[1:-1]
+
+        word_tag_pair = zip(word_list, tag_list)
+        word_tag = ["{}/{}".format(i[0], i[1]) for i in word_tag_pair]
+
+        return " ".join(word_tag)
 
     def _state_observation_pair_increase_one(self, tag, word):
         if tag not in self.state_obsevation_pair:
@@ -120,4 +129,6 @@ if __name__ == "__main__":
     hmm_tagger.train_one_line("我/A 是/B 中国人/C")
     hmm_tagger.train_one_line("你/A 打/B 人/C")
     hmm_tagger._do_train()
+    result = hmm_tagger.predict("你 打 人")
+    print(result)
     pass
