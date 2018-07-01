@@ -94,7 +94,7 @@ class HMMTagger(object):
 
                 self.B[previous_state][word] = word_count / previous_state_count
 
-    def predict(self, line):
+    def predict(self, line, output_graphml_file=None):
         if not self.A:  # using self.A as an training-flag indicate if already trained.
             self._do_train()
 
@@ -103,12 +103,18 @@ class HMMTagger(object):
         # TODO: apply Viterbi algorithms to here
         viterbi = Viterbi(self.A, self.B, self.vocabulary)
         state_list = viterbi.predict_state(word_list)
+
+        if output_graphml_file:
+            viterbi.write_graphml(output_graphml_file)
+
         tag_list = state_list[1:-1]
 
         word_tag_pair = zip(word_list, tag_list)
         word_tag = ["{}/{}".format(i[0], i[1]) for i in word_tag_pair]
 
-        return " ".join(word_tag)
+        word_tag_str = "  ".join(word_tag)  # using two space char for better visible for human just as origin does
+
+        return word_tag_str
 
     def _state_observation_pair_increase_one(self, tag, word):
         if tag not in self.state_obsevation_pair:
