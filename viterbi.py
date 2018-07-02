@@ -47,7 +47,7 @@ class Viterbi(object):
 
             state_observation_likelihood = math.log(
                 self.B[state].get(word, default_word_emission)
-            )
+            ) if self.B[state].get(word, default_word_emission) else - math.inf
 
             path_probability = transition_probability + state_observation_likelihood
 
