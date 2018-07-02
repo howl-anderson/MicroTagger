@@ -5,9 +5,6 @@ from MicroHMM.hmm import HMMModel
 
 
 class HMMTagger(object):
-    START_STATE = '<start>'
-    END_STATE = '<end>'
-
     def __init__(self):
         self.hmm_model = HMMModel()
 
