@@ -46,4 +46,4 @@ if __name__ == "__main__":
     base_line = BaseLineModel()
 
     # tool.driver(19000, 100, base_line.train, base_line.posTag)
-    tool.driver(1000, 1, base_line.train, base_line.posTag)
+    tool.driver(10000, 100, base_line.train, base_line.posTag)
