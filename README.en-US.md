@@ -2,6 +2,12 @@
 ------------------------------
 
 # MicroTagger
+A micro python library for NLP Tagger of Part-Of-Speech (POS)
+
+# Installation
+```bash
+pip install -r requirements.txt
+```
 
 # Python version
 Only test by using Python3

@@ -2,6 +2,12 @@
 ------------------------------
 
 # MicroTagger
+一个微型的用于提取 Part-Of-Speech (POS) 的 Python 包
+
+# 安装
+```bash
+pip install -r requirements.txt
+```
 
 # Python 版本
 Only test by using Python3
