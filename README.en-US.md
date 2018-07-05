@@ -1,12 +1,12 @@
-[README written in English](README.en-US.md)
+[中文版本的 README](README.md)
 ------------------------------
 
 # MicroTagger
 
-# Python 版本
+# Python version
 Only test by using Python3
 
-# 使用
+# Usage
 ```python
 #!/usr/bin/env python
 
@@ -18,13 +18,13 @@ result = hmm_tagger.predict("知识 就是 力量 。")
 print(result)
 ```
 
-输出:
+Output:
 ```text
 知识/m  就是/d  力量/n  。/wj
 ```
 
 
-# 性能
+# Performance
 
 | ID | Model Name                   | Accuracy |
 |:---|:-----------------------------|:---------|
