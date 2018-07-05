@@ -1,3 +1,4 @@
 decorator==4.3.0
 networkx==2.1
 tqdm==4.23.3
+git+https://github.com/howl-anderson/MicroHMM.git
