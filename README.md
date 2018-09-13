@@ -38,4 +38,5 @@ print(result)
 | 2  | HMM                          | 0.92339  |
 
 # Reference
-[Speech and Language Processing > Part-of-Speech Tagging](https://web.stanford.edu/~jurafsky/slp3/10.pdf)
+* [Speech and Language Processing > Part-of-Speech Tagging](https://web.stanford.edu/~jurafsky/slp3/10.pdf)
+* [中文词性标注](https://blog.csdn.net/pku_zzy/article/details/56678445)
